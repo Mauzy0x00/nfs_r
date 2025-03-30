@@ -1,0 +1,4 @@
+# Network File System - Reimagined (in Rust)
+- This is a project entry for the Hackathon PennState University is hosting 
+- The category this project aims at is "10th Anniversary: Timeless Tech". NFS was developed in 1984 by Sun MircoSystems and built on top of the Open Network Computing Remote Procedure Call. It has had 4 revisions since its inception and most recently is at version 4.2 which was released in 2016.
+- The purpose of this project is to reimagine NFS with security in mind using a memory safe programming language, Rust. This will be re-build from the bottom up. Striving first for functionality with security by default, then focusing on user experience. 
