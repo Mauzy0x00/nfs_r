@@ -91,21 +91,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
                 log::info!("Connected to server. Press Ctrl+C to disconnect.");
                 
-                // Create remote directory
-                let remote_dir_path = "remote_test_dir"; 
-                let mode: u32 = 0o755;
-                match client.create_directory(remote_dir_path, mode).await {
-                    Ok(_) => log::info!("Successfully created directory: {}", remote_dir_path),
-                    Err(e) => log::error!("Error creating directory: {}", e),
-                }
+                // TODO:
+                // Implement input loop for the client 
+                client.run().await?;
 
-                // Wait for Ctrl+C
-                let (tx, rx) = async_std::channel::bounded(1);
-                ctrlc::set_handler(move || {
-                    let _ = tx.try_send(());
-                })?;
+                // // Create remote directory
+                // let remote_dir_path = "remote_test_dir"; 
+                // let mode: u32 = 0o755;
+                // match client.create_directory(remote_dir_path, mode).await {
+                //     Ok(_) => log::info!("Successfully created directory: {}", remote_dir_path),
+                //     Err(e) => log::error!("Error creating directory: {}", e),
+                // }
 
-                let _ = rx.recv().await;
+                // // Wait for Ctrl+C
+                // let (tx, rx) = async_std::channel::bounded(1);
+                // ctrlc::set_handler(move || {
+                //     let _ = tx.try_send(());
+                // })?;
+
+                // let _ = rx.recv().await;
 
                 client.disconnect().await?;
                 log::info!("Disconnected from server");

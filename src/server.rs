@@ -44,6 +44,7 @@ impl NfsServer {
             let stream = stream?;
             let server = self.clone();
             
+            // A new task for each client
             task::spawn(async move {
                 if let Err(e) = server.handle_client(stream).await {
                     log::error!("Error handling client: {:?}", e);
