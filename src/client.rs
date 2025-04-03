@@ -1,6 +1,7 @@
 
 
 use std::path::{Path, PathBuf};
+use std::io::Write;
 
 use async_std::{
     io::{stdin, BufReadExt, BufReader},
@@ -8,7 +9,6 @@ use async_std::{
     prelude::*,
     task,
 };
-
 use futures::{select, FutureExt};
 
 //use bincode::config::standard;
@@ -64,7 +64,7 @@ impl NfsClient {
         
         loop {
             print!("> ");
-            io::stdout().flush().unwrap();
+            std::io::stdout().flush().unwrap();
             
             match lines_from_stdin.next().await {
                 Some(line) => {
@@ -83,7 +83,7 @@ impl NfsClient {
     }
 
     async fn process_command(&mut self, command_line: String) -> Result<(), NfsError> {
-        let parts: Vec<&str> = command_line.trim().split_whitespace().collect();
+        let parts: Vec<&str> = command_line.split_whitespace().collect();
         
         if parts.is_empty() {
             return Ok(());
@@ -105,14 +105,14 @@ impl NfsClient {
                 println!("  fsync <path>            - Force write of file to storage");
                 println!("  exit                    - Exit the client");
             },
-            "ls" => {
-                if parts.len() < 2 {
-                    println!("Usage: ls <path>");
-                    return Ok(());
-                }
-                let path = PathBuf::from(parts[1]);
-                self.list_directory(path).await?;
-            },
+            // "ls" => {
+            //     if parts.len() < 2 {
+            //         println!("Usage: ls <path>");
+            //         return Ok(());
+            //     }
+            //     let path = PathBuf::from(parts[1]);
+            //     self.list_directory(path).await?;
+            // },
             "mkdir" => {
                 if parts.len() < 2 {
                     println!("Usage: mkdir <path> [mode]");
@@ -189,38 +189,38 @@ impl NfsClient {
                 self.create_file(path, mode).await?;
                 println!("File created successfully");
             },
-            "cp" => {
-                if parts.len() < 3 {
-                    println!("Usage: cp <from> <to>");
-                    return Ok(());
-                }
-                let from = PathBuf::from(parts[1]);
-                let to = PathBuf::from(parts[2]);
+            // "cp" => {
+            //     if parts.len() < 3 {
+            //         println!("Usage: cp <from> <to>");
+            //         return Ok(());
+            //     }
+            //     let from = PathBuf::from(parts[1]);
+            //     let to = PathBuf::from(parts[2]);
                 
-                self.rename(from, to).await?;
-                println!("Rename/move successful");
-            },
-            "ln" => {
-                if parts.len() < 4 || parts[1] != "-s" {
-                    println!("Usage: ln -s <target> <link>");
-                    return Ok(());
-                }
-                let target = PathBuf::from(parts[2]);
-                let link = PathBuf::from(parts[3]);
+            //     self.rename(from, to).await?;
+            //     println!("Rename/move successful");
+            // },
+            // "ln" => {
+            //     if parts.len() < 4 || parts[1] != "-s" {
+            //         println!("Usage: ln -s <target> <link>");
+            //         return Ok(());
+            //     }
+            //     let target = PathBuf::from(parts[2]);
+            //     let link = PathBuf::from(parts[3]);
                 
-                self.symlink(target, link).await?;
-                println!("Symlink created successfully");
-            },
-            "fsync" => {
-                if parts.len() < 2 {
-                    println!("Usage: fsync <path>");
-                    return Ok(());
-                }
-                let path = PathBuf::from(parts[1]);
+            //     self.symlink(target, link).await?;
+            //     println!("Symlink created successfully");
+            // },
+            // "fsync" => {
+            //     if parts.len() < 2 {
+            //         println!("Usage: fsync <path>");
+            //         return Ok(());
+            //     }
+            //     let path = PathBuf::from(parts[1]);
                 
-                self.fsync(path).await?;
-                println!("Fsync successful");
-            },
+            //     self.fsync(path).await?;
+            //     println!("Fsync successful");
+            // },
             _ => {
                 println!("Unknown command: {}. Type 'help' for available commands.", command);
             }
