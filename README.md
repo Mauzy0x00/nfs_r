@@ -6,3 +6,8 @@
 ### I will continue to build this project when I have time. Here is a screenshot of an example connection to the network file system server:
 ![image](https://github.com/user-attachments/assets/9ee3191d-8cd4-4655-9150-0f94a4ae4f6d)
 
+## Contributions 
+ I would be happy if you would like to help build this! Just make a PR. Feel free to message me on discord or telegram if you have any questions about this project or the code. :]
+
+## License 
+ I plan on applying the GNU General Public License to this repository 
